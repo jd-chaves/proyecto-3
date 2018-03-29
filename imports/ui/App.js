@@ -9,26 +9,33 @@ import AccountsUIWrapper from "./AccountsUIWrapper.js";
 // App component - represents the whole app
 class App extends Component {
    
-    cosntructor(props){
+    constructor(props){
+
+      super(props);
       this.state = {
-        current_search: ""
+        current_search: "",
+        competition_selected:false 
       };
       this.handleSubmit = this.handleSubmit.bind(this);
+      this.agregarPartida = this.agregarPartida.bind(this);
     }
 
 
      handleSubmit(e) {
      this.setState({current_search: e.target.value});
-  }
-
+    }
+      agregarPartida(){
+        
+    }
   render() {
+
     return (
       <div className="container">
         <header>
           <h1>Typing Test</h1>
 
           <AccountsUIWrapper /> 
-          { this.props.currentUser ?
+          { (this.props.currentUser&&!this.state.competition_selected) ?
             <div className="search-competitions">
             <input  type="text" placeholder="Search for competitions"  onChange={this.handleSubmit}/> 
             </div>: ""
@@ -36,7 +43,7 @@ class App extends Component {
         </header>
         
         <ul>
-          {this.props.competitions.filter((comp)=> comp.includes(this.state.text) )
+          {this.props.competitions.filter((comp)=> comp.text.includes(this.state.current_search) )
                                     .map((c)=>
                                           <Competition
                                               key={c._id}
@@ -44,7 +51,8 @@ class App extends Component {
                                            />
                                           )}
         </ul>
-      </div>
+        <button onClick = {this.agregarPartida}></button>
+        </div>
     );
   }
 }
