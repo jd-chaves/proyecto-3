@@ -9,17 +9,16 @@ import AccountsUIWrapper from "./AccountsUIWrapper.js";
 // App component - represents the whole app
 class App extends Component {
    
-     handleSubmit(event) {
-    event.preventDefault();
- 
-    // Find the text field via the React ref
-    const text = ReactDOM.findDOMNode(this.refs.textInput).value.trim();
- 
-    Meteor.call("competitions.insert", text);
+    cosntructor(props){
+      this.state = {
+        current_search: ""
+      };
+      this.handleSubmit = this.handleSubmit.bind(this);
+    }
 
- 
-    // Clear form
-    ReactDOM.findDOMNode(this.refs.textInput).value = "";
+
+     handleSubmit(e) {
+     this.setState({current_search: e.target.value});
   }
 
   render() {
@@ -28,25 +27,22 @@ class App extends Component {
         <header>
           <h1>Typing Test</h1>
 
-          <AccountsUIWrapper />
+          <AccountsUIWrapper /> 
           { this.props.currentUser ?
-            <form className="search-competitions" onSubmit={this.handleSubmit.bind(this)} >
-              <input
-                type="text"
-                ref="textInput"
-                placeholder="Search for competitions"
-              />
-            </form> : ""
+            <div className="search-competitions">
+            <input  type="text" placeholder="Search for competitions"  onChange={this.handleSubmit}/> 
+            </div>: ""
           }
         </header>
         
         <ul>
-          {this.props.competitions.map((c)=>
-            <Competition
-              key={c._id}
-              competition={c}
-            />
-        )}
+          {this.props.competitions.filter((comp)=> comp.includes(this.state.text) )
+                                    .map((c)=>
+                                          <Competition
+                                              key={c._id}
+                                              competition={c}
+                                           />
+                                          )}
         </ul>
       </div>
     );
