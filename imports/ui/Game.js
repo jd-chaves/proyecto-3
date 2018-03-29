@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import Text from "./Text.js";
 
 export default class Game extends Component {
 

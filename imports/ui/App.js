@@ -4,6 +4,7 @@ import { withTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor"; 
 import { Competitions } from "../api/competitions.js"; 
 import Competition from "./Competition.js";
+import Game from "./Game.js";
 import AccountsUIWrapper from "./AccountsUIWrapper.js";
  
 // App component - represents the whole app
@@ -42,6 +43,8 @@ class App extends Component {
           }
         </header>
         
+        { (this.props.currentUser&&!this.state.competition_selected) ?
+          <div>
         <ul>
           {this.props.competitions.filter((comp)=> comp.text.includes(this.state.current_search) )
                                     .map((c)=>
@@ -51,8 +54,15 @@ class App extends Component {
                                            />
                                           )}
         </ul>
+
         <button onClick = {this.agregarPartida}></button>
+        </div> :
+        <div>
+           <Game words={["1","2","3","4","5","6","7","8","9","10","11","12"]}/>
         </div>
+         }
+        </div> 
+    
     );
   }
 }
