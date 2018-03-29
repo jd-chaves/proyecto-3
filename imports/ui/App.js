@@ -36,7 +36,7 @@ class App extends Component {
                 ref="textInput"
                 placeholder="Search for competitions"
               />
-            </form> : "
+            </form> : ""
           }
         </header>
         
