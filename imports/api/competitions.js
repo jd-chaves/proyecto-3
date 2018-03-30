@@ -8,7 +8,7 @@ export const Competitions = new Mongo.Collection("competitions");
 if (Meteor.isServer) {
   // This code only runs on the server
   Meteor.publish("competitions", function competitionsPublication() {
-    return Competitions.find({});
+    return Competitions.find({usernames : this.username });
   });
 }
 

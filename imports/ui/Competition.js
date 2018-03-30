@@ -17,7 +17,7 @@ export default class Competition extends Component {
           &times;
         </button>
         <span className="text">
-           {this.props.competition.text}.  Created by <strong>{this.props.competition.username}</strong>.
+           {this.props.competition.name}.  Created by <strong>{this.props.competition.user}</strong>.
         </span>
       </li>
     );

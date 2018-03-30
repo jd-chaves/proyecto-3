@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { withTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor"; 
 import { Competitions } from "../api/competitions.js"; 
-import { Users } from "../api/users.js"; 
+import { Usuarios } from "../api/usuarios.js"; 
 import Competition from "./Competition.js";
 import Game from "./Game.js";
 import AccountsUIWrapper from "./AccountsUIWrapper.js";
@@ -55,7 +55,7 @@ class App extends Component {
         { (this.props.currentUser&&!this.state.competition_selected) ?
           <div>
         <ul>
-          {this.props.competitions.filter((comp)=> comp.text.includes(this.state.current_search) )
+          {this.props.competitions.filter((comp)=> comp.name.includes(this.state.current_search) )
                                     .map((c)=>
                                           <Competition
                                               key={c._id}
@@ -75,6 +75,14 @@ class App extends Component {
                   ref="textInput"
                   placeholder="Name of your competition"
                 />
+
+           <label className="form-label"><strong>Language: </strong></label>
+
+                 <select name="cars">
+                    <option value="english">English</option>
+                    <option value="french">French</option>
+                    <option value="spanish" selected>Spanish</option>
+  </select>
               </div>
               <div className="col-sm-6"> 
                 <label className="form-label"><strong>Users: </strong></label>
@@ -104,7 +112,7 @@ export default withTracker(() => {
   Meteor.subscribe("competitions");
   return {
     competitions: Competitions.find({}, { sort: { createdAt: -1 } }).fetch(),
-    users: Users.find({}).fetch(),
-    currentUser: Meteor.user(),
+    usuarios: Usuarios.find({}).fetch(),
+    currentUser: Meteor.user()
   };
 })(App);
