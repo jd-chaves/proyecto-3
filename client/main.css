@@ -88,6 +88,25 @@ li {
 li .text {
   margin-left: 10px;
 }
+
+.typedWrong {
+  color: red;
+}
+
+.typedCorrect {
+  color: green;
+}
+
+h2{
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.form-label{
+
+margin-left: 10px;
+
+}
  
 @media (max-width: 600px) {
   li {

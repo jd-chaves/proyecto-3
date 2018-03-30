@@ -8,22 +8,22 @@ export default class Input extends Component {
 		this.state = {
 			text: ""
 		}
+		this.manejarCambioInput = this.manejarCambioInput.bind(this);
+
 	}
 
 	manejarCambioInput(e)
 	{
-		this.setState({
-			text: e.target.value
-		});
-
-		if(this.state.text.endsWith(" "))
+		const text = ReactDOM.findDOMNode(this.refs.textInput).value;
+	if(text.endsWith(" "))
 		{
-			this.props.handleInput(this.state.text.trim());
-			e.target.value="";
+			ReactDOM.findDOMNode(this.refs.textInput).value = "";
+			this.props.handleInput(text.trim());
+			
 		}
 	}
 
   render() {
-    return 	<input type="text" placeholder=""  onChange={this.manejarCambioInput}/>;
+    return 	<input type="text" ref="textInput" placeholder=""  onChange={this.manejarCambioInput}/>;
   }
 }

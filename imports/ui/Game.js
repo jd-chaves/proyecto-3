@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Text from "./Text.js";
+import Input from "./Input.js";
 
 export default class Game extends Component {
 
@@ -8,31 +9,43 @@ export default class Game extends Component {
 	{
 		super(props);
 		this.state = {
-			words: [],
+			words: this.props.words,
 			currentPage: 0,
 			currentWord:0,
-			correct: 0
+			correct: 0,
+			tried: 0
 		}
+		this.handleInput = this.handleInput.bind(this);
 	};
 
 
 	handleInput(text){
-		if(text === words[currentPage*10+currentWord])
+		if(text === this.state.words[this.state.currentPage*16+this.state.currentWord][0])
 		{
 			let temp = this.state.correct + 1;
 			this.setState({correct:temp});
+			this.state.words[this.state.currentPage*16+this.state.currentWord][1]=1;
 		}
-
-		if(this.state.currentWord===9)
+		else{
+			this.state.words[this.state.currentPage*16+this.state.currentWord][1]=2;
+		}
+		if(this.state.currentWord===15)
 		{
 			let temp2 = this.state.currentPage +1; 
 			this.setState({currentPage: temp2});
 		}
-		let temp3 = (this.state.currentWord +1)%10;
+		let temp3 = (this.state.currentWord +1)%16;
 		this.setState({currentWord:temp3});
+		let temp4 = this.state.tried +1;
+		this.setState({tried:temp4});
 	}
 
   render() {
-    return <Text words = {this.state.words} currentPage = {this.state.currentPage} currentWord = {this.state.currentWord} handleInput={this.handleInput}/>;
+    return (<div>
+    	<Text words = {this.state.words} currentPage = {this.state.currentPage} 
+    	currentWord = {this.state.currentWord} handleInput={this.handleInput}/>
+		<Input handleInput={this.handleInput}/>
+		<p>Correct Words: {this.state.correct}</p>
+  			</div>)
   }
 }

@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { withTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor"; 
 import { Competitions } from "../api/competitions.js"; 
+import { Users } from "../api/users.js"; 
 import Competition from "./Competition.js";
 import Game from "./Game.js";
 import AccountsUIWrapper from "./AccountsUIWrapper.js";
@@ -28,6 +29,14 @@ class App extends Component {
       agregarPartida(){
         
     }
+
+      addUser(){
+        const text = ReactDOM.findDOMNode(this.refs.usersInput).value;
+        ReactDOM.findDOMNode(this.refs.usersInput).value = "";
+
+
+      }
+
   render() {
 
     return (
@@ -55,10 +64,34 @@ class App extends Component {
                                           )}
         </ul>
 
-        <button onClick = {this.agregarPartida}></button>
+        <h2>Add Competition</h2>
+
+      
+          <div className="row">
+              <div className="col-sm-6">
+                <label className="form-label"><strong>Name: </strong></label>
+                <input
+                  type="text"
+                  ref="textInput"
+                  placeholder="Name of your competition"
+                />
+              </div>
+              <div className="col-sm-6"> 
+                <label className="form-label"><strong>Users: </strong></label>
+                <input
+                   type="text"
+                   ref="usersInput"
+                   placeholder="Type username"
+                />
+                <button className="btn btn-info" type="button" onClick={this.addUser}>Add</button>
+              </div>
+            </div>
         </div> :
         <div>
-           <Game words={["1","2","3","4","5","6","7","8","9","10","11","12"]}/>
+
+           <Game words={[["hola", 0],["como", 0],["esta", 0],["sol", 0],["luna", 0],
+           ["casa", 0],["silla", 0],["equipo", 0],["pantalon", 0],["lorem", 0],["ipsum", 0],["hola", 0],["prueba", 0],["sistema", 0],["pagina", 0],
+           ["español", 0],["idioma", 0],["lenguaje", 0],["saber", 0],["comer", 0],["hablar", 0],["verbo", 0],["tres", 0],["numero", 0],["liquidar", 0]]}/>
         </div>
          }
         </div> 
@@ -71,6 +104,7 @@ export default withTracker(() => {
   Meteor.subscribe("competitions");
   return {
     competitions: Competitions.find({}, { sort: { createdAt: -1 } }).fetch(),
+    users: Users.find({}).fetch(),
     currentUser: Meteor.user(),
   };
 })(App);
