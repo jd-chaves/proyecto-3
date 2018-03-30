@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import { withTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor"; 
 import { Competitions } from "../api/competitions.js"; 
-import { Usuarios } from "../api/usuarios.js"; 
 import Competition from "./Competition.js";
 import Game from "./Game.js";
 import AccountsUIWrapper from "./AccountsUIWrapper.js";
@@ -16,10 +15,12 @@ class App extends Component {
       super(props);
       this.state = {
         current_search: "",
-        competition_selected:false 
+        competition_selected:false, 
+        competition: null
       };
       this.handleSubmit = this.handleSubmit.bind(this);
       this.agregarPartida = this.agregarPartida.bind(this);
+      this.join = this.join.bind(this);
     }
 
 
@@ -27,18 +28,25 @@ class App extends Component {
      this.setState({current_search: e.target.value});
     }
       agregarPartida(){
-        
+        var arr_users = ReactDOM.findDOMNode(this.refs.usernamesInput).value.split(",").map((n)=>n.trim().toLowerCase());
+        Meteor.call("competitions.insert",ReactDOM.findDOMNode(this.refs.textInput).value,"Spanish", arr_users);
     }
+      join(e){
+        const comp_id = e.target.key;
+        let comp = null;
 
-      addUser(){
-        const text = ReactDOM.findDOMNode(this.refs.usersInput).value;
-        ReactDOM.findDOMNode(this.refs.usersInput).value = "";
+        for(let p in this.props.competitions)
+        {
+          if(p._id===comp_id){
+            comp=p;
+          }
+        }
 
+        this.setState({competition: comp,  competition_selected: true});
 
       }
 
   render() {
-
     return (
       <div className="container">
         <header>
@@ -56,11 +64,13 @@ class App extends Component {
           <div>
         <ul>
           {this.props.competitions.filter((comp)=> comp.name.includes(this.state.current_search) )
-                                    .map((c)=>
+                                    .map((c)=><div>
                                           <Competition
-                                              key={c._id}
+                                              
                                               competition={c}
                                            />
+                                           <button key={c._id} onClick={this.join}>Join</button> 
+                                           </div>
                                           )}
         </ul>
 
@@ -76,22 +86,22 @@ class App extends Component {
                   placeholder="Name of your competition"
                 />
 
-           <label className="form-label"><strong>Language: </strong></label>
+               <label className="form-label"><strong>Language: </strong></label>
 
                  <select name="cars">
                     <option value="english">English</option>
                     <option value="french">French</option>
-                    <option value="spanish" selected>Spanish</option>
-  </select>
+                    <option value="spanish">Spanish</option>
+                 </select>
               </div>
               <div className="col-sm-6"> 
                 <label className="form-label"><strong>Users: </strong></label>
                 <input
                    type="text"
-                   ref="usersInput"
-                   placeholder="Type username"
+                   ref="usernamesInput"
+                   placeholder="Type usernames"
                 />
-                <button className="btn btn-info" type="button" onClick={this.addUser}>Add</button>
+                <button className="btn btn-info" type="button" onClick={this.agregarPartida}>Add</button>
               </div>
             </div>
         </div> :
@@ -112,7 +122,6 @@ export default withTracker(() => {
   Meteor.subscribe("competitions");
   return {
     competitions: Competitions.find({}, { sort: { createdAt: -1 } }).fetch(),
-    usuarios: Usuarios.find({}).fetch(),
-    currentUser: Meteor.user()
+    currentUser: Meteor.user(),
   };
 })(App);
