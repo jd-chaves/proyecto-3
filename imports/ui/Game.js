@@ -8,8 +8,11 @@ export default class Game extends Component {
 	constructor(props)
 	{
 		super(props);
+
+		var arr = this.props.words.map(w=>[w,0]);
+		console.log(arr);
 		this.state = {
-			words: this.props.words,
+			words: arr,
 			currentPage: 0,
 			currentWord:0,
 			correct: 0,

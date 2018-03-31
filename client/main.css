@@ -108,6 +108,19 @@ margin-left: 10px;
 
 }
  
+ #pags {
+  list-style: none;
+  display: flex;
+}
+
+#pags > li {
+  margin-right: 0.3em;
+  margin-left: 40px;
+  color: blue;
+  user-select: none;
+  cursor: pointer;
+  font-size: 40px;
+}
 @media (max-width: 600px) {
   li {
     padding: 12px 15px;

@@ -37,7 +37,9 @@ Meteor.methods({
       user: Meteor.users.findOne(this.userId).username ,
       usernames: arr_users,
       language: the_language,
-      words: arr_words
+      words: ["hola","como","esta","todo","bien", "o", "no", "esta", "es","una", "prueba", "de", "la", "competencia", "de", "la", "pagina", "que",
+      "estamos","hacinedo", "para","el", "curso", "de", "desarrollo", "web", "si", "funciona", "sera", "severo","ya","no","se","que","mas","palabras",
+      "poner"]
     });
   },
   "competitions.remove"(competitionId) {
